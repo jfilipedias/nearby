@@ -1,7 +1,8 @@
 import { Text, View } from "react-native"
 import { IconMapPin, IconPhone, IconTicket } from "@tabler/icons-react-native"
-import { Info } from "../info"
 import { s } from "./styles"
+import { Coupon } from "../coupon"
+import { Info } from "../info"
 
 export type DetailsProps = {
   name: string
@@ -17,9 +18,11 @@ export type DetailsProps = {
 
 type Props = {
   data: DetailsProps
+  coupon: string | null
 }
 
-export function Details({ data }: Props) {
+export function Details({ data, coupon }: Props) {
+
   return (
     <View style={s.container}>
       <Text style={s.name}>{data.name}</Text>
@@ -31,7 +34,19 @@ export function Details({ data }: Props) {
         <Info icon={IconPhone} description={data.phone}/>
       </View>
       <View style={s.group}>
+        <Text style={s.title}>Regulamento</Text>
+        {data.rules.map((item) => (
+          <Text key={item.id} style={s.rule}>
+            {`\u2022 ${item.description}`}
+          </Text>
+        ))}
       </View>
+      {coupon && (
+        <View style={s.group}>
+          <Text style={s.title}>Utilize esse cupom</Text>
+          <Coupon code={coupon}/>
+        </View>
+      )}
     </View>
   )
 }
